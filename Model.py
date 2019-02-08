@@ -39,23 +39,25 @@ y_test = np_utils.to_categorical(y_test)
 num_classes = y_test.shape[1]
 
 
-
-
-def baseline_model():
+# define the  model
+def digit_model():
 	# create model
 	model = Sequential()
-	model.add(Conv2D(32, (5, 5), input_shape=(1, 28, 28), activation='relu'))
+	model.add(Conv2D(30, (5, 5), input_shape=(1, 28, 28), activation='relu'))
+	model.add(MaxPooling2D(pool_size=(2, 2)))
+	model.add(Conv2D(15, (3, 3), activation='relu'))
 	model.add(MaxPooling2D(pool_size=(2, 2)))
 	model.add(Dropout(0.2))
 	model.add(Flatten())
 	model.add(Dense(128, activation='relu'))
+	model.add(Dense(50, activation='relu'))
 	model.add(Dense(num_classes, activation='softmax'))
 	# Compile model
 	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 	return model
 
 # build the model
-model = baseline_model()
+model = digit_model()
 
 # Fit the model
 model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=200, verbose=2)
